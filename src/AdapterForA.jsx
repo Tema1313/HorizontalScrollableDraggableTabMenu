@@ -1,71 +1,82 @@
 
-import React, { useState, useEffect, TouchEvent} from 'react';
+import React, { useState, useEffect, TouchEvent, useRef } from 'react';
 import axios from 'axios';
 import "./style.css"
 import * as RB from "react-bootstrap"
 
 function App() {
-  let btnLeft, btnRight,tabMenu
-  let activeDrag = false;
-  useEffect(()=> {
-    btnLeft = document.querySelector(".left-btn")
-    btnRight = document.querySelector(".right-btn")
-    tabMenu = document.querySelector(".tab-menu")
-  },[])
-
-  const IconVisibility = () => {
-    let scrollLeftValue = tabMenu.scrollLeft
-    let scrollableWidth = tabMenu.scrollWidth - tabMenu.clientWidth;
-
-    btnLeft.style.display = scrollLeftValue > 0 ? "block" : "none"
-    btnRight.style.display = scrollableWidth > scrollLeftValue ? "block" : "none"
-  }
-
-  const handleRightClick = () => {
-    tabMenu.scrollLeft += 150;
-    setTimeout(()=>IconVisibility(),50)
-  }
-
-  const handleLeftClick = () => {
-    tabMenu.scrollLeft -= 150;
-    setTimeout(()=>IconVisibility(),50)
-  }
+  const array = [
+    {
+      city:"Tokio",
+      activeStatus:true
+    },
+    {
+      city:"Cario",
+      activeStatus:true
+    },
+    {
+      city:"Rome",
+      activeStatus:true
+    },
+    {
+      city:"Paris",
+      activeStatus:true
+    },
+    {
+      city:"Mexico",
+      activeStatus:true
+    },
+    {
+      city:"Florence",
+      activeStatus:true
+    },
+    {
+      city:"New York",
+      activeStatus:true
+    },
+    {
+      city:"Moscow",
+      activeStatus:true
+    },
+    {
+      city:"Sydney",
+      activeStatus:true
+    },
+    {
+      city:"San Francisco",
+      activeStatus:true
+    },
+    {
+      city:"Amsterdam",
+      activeStatus:true
+    }
+  ]
+  const tabMenu = useRef();
+  const [activeDrag, setActiveDrag] = useState(false)
 
   const handleMouseMove = (drag) => {
-    if(!activeDrag) return;
-    tabMenu.scrollLeft -= drag.movementX;
+    if (!activeDrag) return;
+    tabMenu.current.scrollLeft -= drag.movementX;
+    tabMenu.current.classList.add("dragging")
   }
 
-  document.addEventListener("mouseup",()=>{
-    activeDrag = false
+  document.addEventListener("mouseup", () => {
+    setActiveDrag(false)
+    tabMenu.current.classList.remove("dragging")
   })
 
   const handleMouseDown = () => {
-    activeDrag = true
+    setActiveDrag(true)
   }
 
-  window.onload = function(){
-    btnRight.style.display = tabMenu.scrollWidth > tabMenu.clientWidth || tabMenu.scrollWidth >= this.window.innerWidth ? "block" : "none"
-    btnLeft.style.display = tabMenu.scrollWidth >= this.window.innerWidth ? "" : "none"
-  }
-
-  window.onresize = function(){
-    btnRight.style.display = tabMenu.scrollWidth > tabMenu.clientWidth || tabMenu.scrollWidth >= this.window.innerWidth ? "block" : "none"
-    btnLeft.style.display = tabMenu.scrollWidth >= this.window.innerWidth ? "" : "none"
-
-    let scrollLeftValue = Math.round(tabMenu.scrollLeft)
-
-    btnLeft.style.display = scrollLeftValue > 0 ? "block" : "none"
-  }
+  
 
   return (
     <section className="main-container">
       <div className="tab-nav-bar">
         <div className="tab-navigation">
-        <i onClick={()=>handleLeftClick()} className="bi bi-chevron-left left-btn"></i>
-        <i onClick={()=>handleRightClick()} className="bi bi-chevron-right right-btn"></i>
-          <ul onMouseMove={(drag)=>handleMouseMove(drag)} onMouseDown={()=>handleMouseDown()} className="tab-menu" >
-            <li className="tab-btn active">Tokio</li>
+          <ul ref={tabMenu} onMouseMove={(drag) => handleMouseMove(drag)} onMouseDown={() => handleMouseDown()} className="tab-menu" >
+            {/* <li className="tab-btn active">Tokio</li>
             <li className="tab-btn">Cario</li>
             <li className="tab-btn">Rome</li>
             <li className="tab-btn">Paris</li>
@@ -75,8 +86,69 @@ function App() {
             <li className="tab-btn">Moscow</li>
             <li className="tab-btn">Sydney</li>
             <li className="tab-btn">San Francisco</li>
-            <li className="tab-btn">Amsterdam</li>
+            <li className="tab-btn">Amsterdam</li> */}
+            {array.map((city)=>(
+              <li >{city}</li>
+            ))}
           </ul>
+        </div>
+      </div>
+
+      <div className='tab-content'>
+        <div className="tab active">
+          <div className="row">
+            Tokio
+          </div>
+        </div>
+        <div className="tab">
+          <div className="row">
+            Cario
+          </div>
+        </div>
+        <div className="tab">
+          <div className="row">
+            Rome
+          </div>
+        </div>
+        <div className="tab">
+          <div className="row">
+            Paris
+          </div>
+        </div>
+        <div className="tab">
+          <div className="row">
+            Mexico
+          </div>
+        </div>
+        <div className="tab">
+          <div className="row">
+            Florence
+          </div>
+        </div>
+        <div className="tab">
+          <div className="row">
+            New York
+          </div>
+        </div>
+        <div className="tab">
+          <div className="row">
+            Moscow
+          </div>
+        </div>
+        <div className="tab">
+          <div className="row">
+            Sydney
+          </div>
+        </div>
+        <div className="tab">
+          <div className="row">
+            San Francisco
+          </div>
+        </div>
+        <div className="tab">
+          <div className="row">
+            Amsterdam
+          </div>
         </div>
       </div>
     </section>
