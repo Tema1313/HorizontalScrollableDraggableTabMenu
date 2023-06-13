@@ -42,7 +42,7 @@ function App() {
   ]
   const tabMenu = useRef();
   const [activeDrag, setActiveDrag] = useState(false)
-  const [ active, setActive ] = useState(null);
+  const [ active, setActive ] = useState(0);
 
   const handleMouseMove = (drag) => {
     if (!activeDrag) return;
