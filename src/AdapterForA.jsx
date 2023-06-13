@@ -5,54 +5,44 @@ import "./style.css"
 import * as RB from "react-bootstrap"
 
 function App() {
-  const array = [
+  let array = [
     {
-      city:"Tokio",
-      activeStatus:true
+      city: "Tokio",
     },
     {
-      city:"Cario",
-      activeStatus:true
+      city: "Cario",
     },
     {
-      city:"Rome",
-      activeStatus:true
+      city: "Rome",
     },
     {
-      city:"Paris",
-      activeStatus:true
+      city: "Paris",
     },
     {
-      city:"Mexico",
-      activeStatus:true
+      city: "Mexico",
     },
     {
-      city:"Florence",
-      activeStatus:true
+      city: "Florence",
     },
     {
-      city:"New York",
-      activeStatus:true
+      city: "New York",
     },
     {
-      city:"Moscow",
-      activeStatus:true
+      city: "Moscow",
     },
     {
-      city:"Sydney",
-      activeStatus:true
+      city: "Sydney",
     },
     {
-      city:"San Francisco",
-      activeStatus:true
+      city: "San Francisco",
     },
     {
-      city:"Amsterdam",
-      activeStatus:true
+      city: "Amsterdam"
     }
   ]
   const tabMenu = useRef();
   const [activeDrag, setActiveDrag] = useState(false)
+  const [ active, setActive ] = useState(null);
 
   const handleMouseMove = (drag) => {
     if (!activeDrag) return;
@@ -69,91 +59,29 @@ function App() {
     setActiveDrag(true)
   }
 
-  
+  const openTab = e => setActive(+e.target.dataset.index);
 
   return (
     <section className="main-container">
       <div className="tab-nav-bar">
         <div className="tab-navigation">
           <ul ref={tabMenu} onMouseMove={(drag) => handleMouseMove(drag)} onMouseDown={() => handleMouseDown()} className="tab-menu" >
-            {/* <li className="tab-btn active">Tokio</li>
-            <li className="tab-btn">Cario</li>
-            <li className="tab-btn">Rome</li>
-            <li className="tab-btn">Paris</li>
-            <li className="tab-btn">Mexico</li>
-            <li className="tab-btn">Florence</li>
-            <li className="tab-btn">New York</li>
-            <li className="tab-btn">Moscow</li>
-            <li className="tab-btn">Sydney</li>
-            <li className="tab-btn">San Francisco</li>
-            <li className="tab-btn">Amsterdam</li> */}
-            {array.map((city)=>(
-              <li >{city}</li>
+            {array.map((city, key) => (
+              <li data-index={key} onClick={openTab} key={key} className={`${key === active ? "active tab-btn" : "tab-btn"}`}>{city.city}</li>
             ))}
           </ul>
         </div>
       </div>
-
       <div className='tab-content'>
-        <div className="tab active">
-          <div className="row">
-            Tokio
+        {array.map((city, key) => (
+          <div key={key} className={`${key===active ? "tab active" : "tab"}`}>
+            <div className='row'>
+              {city.city}
+            </div>
           </div>
-        </div>
-        <div className="tab">
-          <div className="row">
-            Cario
-          </div>
-        </div>
-        <div className="tab">
-          <div className="row">
-            Rome
-          </div>
-        </div>
-        <div className="tab">
-          <div className="row">
-            Paris
-          </div>
-        </div>
-        <div className="tab">
-          <div className="row">
-            Mexico
-          </div>
-        </div>
-        <div className="tab">
-          <div className="row">
-            Florence
-          </div>
-        </div>
-        <div className="tab">
-          <div className="row">
-            New York
-          </div>
-        </div>
-        <div className="tab">
-          <div className="row">
-            Moscow
-          </div>
-        </div>
-        <div className="tab">
-          <div className="row">
-            Sydney
-          </div>
-        </div>
-        <div className="tab">
-          <div className="row">
-            San Francisco
-          </div>
-        </div>
-        <div className="tab">
-          <div className="row">
-            Amsterdam
-          </div>
-        </div>
+        ))}
       </div>
     </section>
-
-
   );
 }
 
